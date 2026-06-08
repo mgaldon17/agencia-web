@@ -12,9 +12,9 @@ export default {
         brand: {
           black: '#050505',
           dark: '#0f172a',
-          primary: '#8b5cf6', // Violeta vibrante
-          secondary: '#ec4899', // Rosa intenso
-          accent: '#22d3ee', // Cian eléctrico
+          primary: '#6366f1', // Indigo
+          secondary: '#06b6d6', // Cyan
+          accent: '#d946ef', // Fuchsia
         },
         // Tokens semánticos enlazados a variables CSS (ver src/styles/main.css).
         // Permiten modificadores de opacidad gracias a <alpha-value>.

@@ -45,28 +45,28 @@ const es = {
       'Implementamos tecnología de vanguardia para resolver los cuellos de botella de tu negocio.',
     items: [
       {
-        icono: 'message-square',
+        icono: 'bot-message-square',
         titulo: 'Chatbots de WhatsApp',
         descripcion:
           'Atención inmediata, cierre de ventas y soporte técnico 24/7 directamente en el chat de tus clientes.',
         acento: { fondo: 'bg-brand-primary/20', texto: 'text-brand-primary' },
       },
       {
-        icono: 'share-2',
+        icono: 'megaphone',
         titulo: 'Automatización de Redes Sociales',
         descripcion:
           'Gestión inteligente de contenido y respuestas automáticas en Instagram, LinkedIn y X para mantener tu marca activa.',
         acento: { fondo: 'bg-brand-secondary/20', texto: 'text-brand-secondary' },
       },
       {
-        icono: 'mic',
+        icono: 'audio-lines',
         titulo: 'Agentes de Voz con IA',
         descripcion:
           'Agentes de voz con lenguaje natural para llamadas de soporte, ventas o gestión de citas telefónicas.',
         acento: { fondo: 'bg-brand-accent/20', texto: 'text-brand-accent' },
       },
       {
-        icono: 'workflow',
+        icono: 'waypoints',
         titulo: 'Flujos de Trabajo a Medida',
         descripcion:
           'Conectamos tus herramientas actuales (CRM, Email, Notion) con modelos de IA para automatizar tareas complejas.',
@@ -145,28 +145,28 @@ const en = {
       'We implement cutting-edge technology to solve your business bottlenecks.',
     items: [
       {
-        icono: 'message-square',
+        icono: 'bot-message-square',
         titulo: 'WhatsApp Chatbots',
         descripcion:
           'Instant support, sales closing and 24/7 technical assistance right in your customers’ chat.',
         acento: { fondo: 'bg-brand-primary/20', texto: 'text-brand-primary' },
       },
       {
-        icono: 'share-2',
+        icono: 'megaphone',
         titulo: 'Social Media Automation',
         descripcion:
           'Smart content management and automated replies on Instagram, LinkedIn and X to keep your brand active.',
         acento: { fondo: 'bg-brand-secondary/20', texto: 'text-brand-secondary' },
       },
       {
-        icono: 'mic',
+        icono: 'audio-lines',
         titulo: 'AI Voice Agents',
         descripcion:
           'Natural-language voice agents for support calls, sales or phone appointment scheduling.',
         acento: { fondo: 'bg-brand-accent/20', texto: 'text-brand-accent' },
       },
       {
-        icono: 'workflow',
+        icono: 'waypoints',
         titulo: 'Custom Workflows',
         descripcion:
           'We connect your current tools (CRM, Email, Notion) with AI models to automate complex tasks.',
