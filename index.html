@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agencia IA | Automatización Inteligente para Negocios</title>
+  <meta name="description" content="Escala tu negocio con agentes de IA, chatbots de WhatsApp y automatización de procesos." />
+  <!-- Aplica el tema guardado antes de pintar para evitar parpadeo (FOUC).
+       Modo noche por defecto si no hay preferencia previa. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('tema');
+        document.documentElement.classList.toggle('dark', t ? t === 'oscuro' : true);
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <!-- Iconos Lucide (disponibles como variable global window.lucide) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-page text-ink antialiased">
+  <!-- La interfaz se renderiza de forma modular desde src/main.js -->
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

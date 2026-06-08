@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Paletas de color (tokens semánticos).
+ * :root  → modo DÍA (paleta clara, profesional sobre slate)
+ * .dark  → modo NOCHE (paleta oscura original)
+ * Cambiar una paleta es editar SOLO estas variables, no los componentes.
+ */
+:root {
+  /* Modo día — claro, limpio y profesional */
+  --c-page: 248 250 252;        /* slate-50  */
+  --c-page-alt: 241 245 249;    /* slate-100 */
+  --c-ink-strong: 15 23 42;     /* slate-900 */
+  --c-ink: 51 65 85;            /* slate-700 */
+  --c-ink-muted: 100 116 139;   /* slate-500 */
+  --c-line: 15 23 42;           /* slate-900 (se usa con baja opacidad) */
+
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(15, 23, 42, 0.08);
+  --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 12px 32px rgba(15, 23, 42, 0.06);
+  --navbar-bg: rgba(248, 250, 252, 0.8);
+}
+
+.dark {
+  /* Modo noche — oscuro */
+  --c-page: 5 5 5;              /* #050505 */
+  --c-page-alt: 0 0 0;          /* negro   */
+  --c-ink-strong: 255 255 255;
+  --c-ink: 226 232 240;         /* slate-200 */
+  --c-ink-muted: 148 163 184;   /* slate-400 */
+  --c-line: 255 255 255;        /* blanco (se usa con baja opacidad) */
+
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.10);
+  --card-shadow: none;
+  --navbar-bg: rgba(5, 5, 5, 0.8);
+}
+
+@layer base {
+  body {
+    @apply bg-page text-ink antialiased transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    @apply backdrop-blur-lg rounded-2xl transition-colors duration-300;
+  }
+  .btn-primary {
+    @apply px-6 py-3 bg-brand-primary hover:bg-brand-secondary transition-all duration-300 rounded-lg font-semibold text-white shadow-lg shadow-brand-primary/20;
+  }
+  .btn-secondary {
+    @apply px-6 py-3 border border-line/20 hover:bg-line/10 transition-all duration-300 rounded-lg font-semibold text-ink-strong;
+  }
+  .navbar-scrolled {
+    background-color: var(--navbar-bg);
+    @apply backdrop-blur-lg border-b border-line/10;
+  }
+  .theme-toggle {
+    @apply w-9 h-9 flex items-center justify-center rounded-lg border border-line/20 text-ink-strong hover:bg-line/10 transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    @apply opacity-0 translate-y-5 transition-all duration-700 ease-out;
+  }
+  .reveal.is-visible {
+    @apply opacity-100 translate-y-0;
+  }
+}
