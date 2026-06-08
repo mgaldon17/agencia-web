@@ -1,0 +1,48 @@
+name: Retirar la web
+
+# Da de baja el sitio de GitHub Pages (deja de servirse en su URL).
+# Se lanza manualmente desde la pestaña Actions y requiere confirmación
+# escribiendo "RETIRAR" para evitar ejecuciones accidentales.
+on:
+  workflow_dispatch:
+    inputs:
+      confirmacion:
+        description: 'Escribe RETIRAR para confirmar que quieres dar de baja la web'
+        required: true
+        default: ''
+
+permissions:
+  contents: read
+  pages: write
+
+# Mismo grupo que el resto de pipelines de Pages para que no se solapen.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  takedown:
+    name: Dar de baja GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar la confirmación
+        if: ${{ inputs.confirmacion != 'RETIRAR' }}
+        run: |
+          echo "::error::Debes escribir exactamente RETIRAR para confirmar. Cancelando."
+          exit 1
+
+      - name: Desactivar el sitio de GitHub Pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Elimina el sitio de Pages; si ya estaba desactivado (404), no falla.
+          codigo=$(gh api -X DELETE "/repos/${{ github.repository }}/pages" \
+            --silent -w "%{http_code}" 2>/dev/null || true)
+          if [ "$codigo" = "204" ]; then
+            echo "✅ Web retirada correctamente."
+          elif [ "$codigo" = "404" ]; then
+            echo "ℹ️  La web ya estaba retirada (Pages no estaba activo)."
+          else
+            echo "::error::Respuesta inesperada de la API (HTTP $codigo)."
+            exit 1
+          fi
