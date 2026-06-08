@@ -1,5 +1,6 @@
-import { content } from './data/content.js';
+import { traducciones, idiomaPorDefecto } from './data/content.js';
 import { montar } from './lib/renderer.js';
+import { detectarIdioma, persistirIdioma } from './lib/i18n.js';
 
 import { Navbar } from './components/navbar.js';
 import { Hero } from './components/hero.js';
@@ -12,29 +13,45 @@ import { initIcons } from './behaviors/icons.js';
 import { initReveal } from './behaviors/reveal.js';
 import { initNavbarScroll } from './behaviors/navbar.js';
 import { initTheme } from './behaviors/theme.js';
+import { initLanguage } from './behaviors/language.js';
 
 /**
  * Composition root de la aplicación.
  *
- * DIP: la `App` no construye sus dependencias internamente de forma rígida;
- *      recibe la lista ordenada de componentes (secciones) y de comportamientos.
- *      Reordenar la página o desactivar un efecto se hace cambiando estos arrays.
- * OCP: añadir una sección nueva = registrarla en `secciones`.
- * LSP/ISP: todos los componentes cumplen la misma interfaz `(content) => string`
- *          y todos los comportamientos la interfaz `() => void`.
+ * DIP: la `App` recibe el contenido (multiidioma), las secciones y los
+ *      comportamientos por parámetro; no los crea de forma rígida.
+ * OCP: añadir una sección o un comportamiento = registrarlo en su array;
+ *      añadir un idioma = ampliar `contenido`.
+ * LSP/ISP: todos los componentes cumplen `(datos) => string` y todos los
+ *          comportamientos `(contexto) => void`.
  */
 export function createApp({
   raiz = '#app',
-  datos = content,
+  contenido = traducciones,
   secciones = [Navbar, Hero, Services, Benefits, CallToAction, Footer],
-  comportamientos = [initIcons, initReveal, initNavbarScroll, initTheme],
+  comportamientos = [initIcons, initReveal, initNavbarScroll, initTheme, initLanguage],
 } = {}) {
-  return {
-    mount() {
-      const marcado = secciones.map((seccion) => seccion(datos)).join('');
-      montar(raiz, marcado);
-      // Los comportamientos se inicializan tras insertar el DOM.
-      comportamientos.forEach((init) => init());
-    },
-  };
+  const idiomas = Object.keys(contenido);
+  let idioma = detectarIdioma(idiomas, idiomaPorDefecto);
+
+  function cambiarIdioma(nuevo) {
+    if (!idiomas.includes(nuevo) || nuevo === idioma) return;
+    idioma = nuevo;
+    persistirIdioma(idioma);
+    render();
+  }
+
+  function render() {
+    document.documentElement.lang = idioma;
+
+    // Se inyecta info de idioma para que la navbar pinte el botón correcto.
+    const datos = { ...contenido[idioma], _i18n: { idioma, idiomas } };
+    montar(raiz, secciones.map((seccion) => seccion(datos)).join(''));
+
+    // Los comportamientos se reinician tras cada render con el contexto actual.
+    const contexto = { idioma, idiomas, cambiarIdioma };
+    comportamientos.forEach((init) => init(contexto));
+  }
+
+  return { mount: render };
 }
