@@ -33,8 +33,16 @@ jobs:
 
       - name: Desactivar el sitio de GitHub Pages
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # El GITHUB_TOKEN automático NO puede borrar Pages (es un endpoint
+          # administrativo → 403 "Resource not accessible by integration").
+          # Hace falta un PAT con permiso de administración del repo, guardado
+          # en el secreto PAGES_ADMIN_TOKEN (Settings → Secrets → Actions).
+          GH_TOKEN: ${{ secrets.PAGES_ADMIN_TOKEN }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Falta el secreto PAGES_ADMIN_TOKEN (PAT con permiso de administración). El GITHUB_TOKEN por defecto no puede dar de baja Pages."
+            exit 1
+          fi
           # Da de baja Pages. `gh api` sale con error en respuestas >=400; el
           # 404 (Pages ya estaba desactivado) lo tratamos como éxito.
           if gh api -X DELETE "repos/${{ github.repository }}/pages" --silent 2>err.log; then
