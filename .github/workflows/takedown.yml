@@ -35,14 +35,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Elimina el sitio de Pages; si ya estaba desactivado (404), no falla.
-          codigo=$(gh api -X DELETE "/repos/${{ github.repository }}/pages" \
-            --silent -w "%{http_code}" 2>/dev/null || true)
-          if [ "$codigo" = "204" ]; then
+          # Da de baja Pages. `gh api` sale con error en respuestas >=400; el
+          # 404 (Pages ya estaba desactivado) lo tratamos como éxito.
+          if gh api -X DELETE "repos/${{ github.repository }}/pages" --silent 2>err.log; then
             echo "✅ Web retirada correctamente."
-          elif [ "$codigo" = "404" ]; then
+          elif grep -q "HTTP 404" err.log; then
             echo "ℹ️  La web ya estaba retirada (Pages no estaba activo)."
           else
-            echo "::error::Respuesta inesperada de la API (HTTP $codigo)."
+            echo "::error::Respuesta inesperada de la API al retirar Pages:"
+            cat err.log
             exit 1
           fi
