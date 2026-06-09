@@ -2,7 +2,7 @@ import { html } from '../lib/renderer.js';
 
 const BenefitItem = ({ icono, titulo, descripcion }) => html`
   <div class="flex gap-4 reveal">
-    <div class="shrink-0 w-11 h-11 bg-brand-primary/10 rounded-lg flex items-center justify-center text-brand-primary">
+    <div class="shrink-0 w-12 h-12 bg-brand-primary/10 rounded-2xl flex items-center justify-center text-brand-primary">
       <i data-lucide="${icono}"></i>
     </div>
     <div>
