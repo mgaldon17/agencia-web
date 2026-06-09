@@ -5,8 +5,9 @@ const claseBoton = (estilo) => (estilo === 'primary' ? 'btn-primary' : 'btn-seco
 /** Sección principal (hero). Interfaz de componente: (content) => string */
 export const Hero = ({ hero }) => html`
   <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-primary/10 blur-[120px] rounded-full -z-10"></div>
-    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-secondary/10 blur-[100px] rounded-full -z-10"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-primary/20 blur-[120px] rounded-full -z-10"></div>
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-secondary/20 blur-[100px] rounded-full -z-10"></div>
+    <div class="absolute top-1/3 -left-32 w-[460px] h-[460px] bg-brand-accent/15 blur-[110px] rounded-full -z-10"></div>
 
     <div class="max-w-7xl mx-auto px-6 w-full">
       <div class="max-w-3xl reveal">

@@ -9,9 +9,9 @@
  * Cambiar una paleta es editar SOLO estas variables, no los componentes.
  */
 :root {
-  /* Modo día — claro, limpio y profesional */
-  --c-page: 248 250 252;        /* slate-50  */
-  --c-page-alt: 241 245 249;    /* slate-100 */
+  /* Modo día — claro, fresco y cercano (look clínica dental) */
+  --c-page: 255 255 255;        /* blanco limpio */
+  --c-page-alt: 240 249 255;    /* sky-50 — lavado de color suave */
   --c-ink-strong: 15 23 42;     /* slate-900 */
   --c-ink: 51 65 85;            /* slate-700 */
   --c-ink-muted: 100 116 139;   /* slate-500 */
@@ -20,7 +20,8 @@
   --card-bg: rgba(255, 255, 255, 0.85);
   --card-border: rgba(15, 23, 42, 0.08);
   --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 12px 32px rgba(15, 23, 42, 0.06);
-  --navbar-bg: rgba(248, 250, 252, 0.8);
+  --card-shadow-hover: 0 1px 3px rgba(15, 23, 42, 0.10), 0 22px 44px rgba(15, 23, 42, 0.14);
+  --navbar-bg: rgba(248, 250, 252, 0.7);
 }
 
 .dark {
@@ -35,7 +36,8 @@
   --card-bg: rgba(255, 255, 255, 0.05);
   --card-border: rgba(255, 255, 255, 0.10);
   --card-shadow: none;
-  --navbar-bg: rgba(5, 5, 5, 0.8);
+  --card-shadow-hover: 0 22px 44px rgba(0, 0, 0, 0.45);
+  --navbar-bg: rgba(5, 5, 5, 0.7);
 }
 
 @layer base {
@@ -49,28 +51,69 @@
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
-    @apply backdrop-blur-lg rounded-2xl transition-colors duration-300;
+    @apply backdrop-blur-lg rounded-3xl;
+    /* Solo transform/opacity/shadow se animan (color para el cambio de tema). */
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 300ms ease, border-color 300ms ease;
+  }
+  /* Acento sutil en hover: leve elevación + sombra suave. */
+  .glass-card:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: var(--card-shadow-hover);
   }
   .btn-primary {
-    @apply px-6 py-3 bg-brand-primary hover:bg-brand-secondary transition-all duration-300 rounded-lg font-semibold text-white shadow-lg shadow-brand-primary/20;
+    @apply px-6 py-3 bg-brand-primary hover:bg-brand-secondary hover:-translate-y-0.5 transition-all duration-300 ease-apple-soft rounded-xl font-semibold text-white shadow-lg shadow-brand-primary/25;
   }
   .btn-secondary {
-    @apply px-6 py-3 border border-line/20 hover:bg-line/10 transition-all duration-300 rounded-lg font-semibold text-ink-strong;
+    @apply px-6 py-3 border border-line/20 hover:bg-line/10 transition-all duration-300 ease-apple-soft rounded-xl font-semibold text-ink-strong;
   }
   .navbar-scrolled {
     background-color: var(--navbar-bg);
-    @apply backdrop-blur-lg border-b border-line/10;
+    @apply backdrop-blur-md border-b border-line/10;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
   }
   .theme-toggle {
-    @apply w-9 h-9 flex items-center justify-center rounded-lg border border-line/20 text-ink-strong hover:bg-line/10 transition-all duration-300;
+    @apply w-9 h-9 flex items-center justify-center rounded-lg border border-line/20 text-ink-strong hover:bg-line/10 transition-all duration-300 ease-apple-soft;
   }
 }
 
 @layer utilities {
+  /* Reveal por scroll: opacity 0→1 + translateY, curva Apple. Solo GPU. */
   .reveal {
-    @apply opacity-0 translate-y-5 transition-all duration-700 ease-out;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
   }
   .reveal.is-visible {
-    @apply opacity-100 translate-y-0;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Accesibilidad: con reduced-motion desactivamos transiciones, animaciones y
+ * cualquier transform de aparición, y mostramos todo el contenido de inmediato
+ * (nada de opacidad 0 atascada).
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .glass-card:hover,
+  .btn-primary:hover {
+    transform: none !important;
   }
 }

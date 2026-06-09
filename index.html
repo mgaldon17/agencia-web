@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth dark">
+<html lang="es" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,14 +10,14 @@
   <title>Recepción WhatsApp 24/7 para clínicas dentales</title>
   <meta name="description" content="Tu clínica responde a cada paciente al instante y le agenda la cita sola, también fuera de horario. Menos llamadas perdidas, menos huecos en la agenda." />
   <!-- Aplica el tema guardado antes de pintar para evitar parpadeo (FOUC).
-       Modo noche por defecto si no hay preferencia previa. -->
+       Modo día por defecto (look claro y fresco) si no hay preferencia previa. -->
   <script>
     (function () {
       try {
         var t = localStorage.getItem('tema');
-        document.documentElement.classList.toggle('dark', t ? t === 'oscuro' : true);
+        document.documentElement.classList.toggle('dark', t === 'oscuro');
       } catch (e) {
-        document.documentElement.classList.add('dark');
+        /* sin preferencia: se queda en modo día */
       }
     })();
   </script>
